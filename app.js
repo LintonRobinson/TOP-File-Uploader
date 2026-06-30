@@ -38,6 +38,13 @@ app.use(
 
 app.use(passport.session());
 
+passport.use(
+  new LocalStrategy(async (username, password, done) => {
+    try {
+    } catch (error) {}
+  }),
+);
+
 // No Path Found Error Fallback
 app.use((req, res, next) => {
   res.status(404).render("errorPage");
