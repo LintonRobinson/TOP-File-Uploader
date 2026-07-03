@@ -23,6 +23,8 @@ app.use(express.urlencoded({ extended: true }));
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
 
+/*
+
 // Initialize prisma store
 const prismaStore = new PrismaSessionStore({ prisma });
 
@@ -45,15 +47,21 @@ passport.use(
   }),
 );
 
+*/
+
+app.get("/", (req, res) => {
+  res.render("pages/home-page");
+});
+
 // No Path Found Error Fallback
 app.use((req, res, next) => {
-  res.status(404).render("errorPage");
+  res.status(404).render("pages/error-page");
 });
 
 // Errors forwarded by next(err)
 app.use((err, req, res, next) => {
   console.error(err);
-  res.status(500).render("errorPage");
+  res.status(500).render("pages/error-page");
 });
 
 app

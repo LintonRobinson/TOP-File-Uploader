@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles/output.css">
+    <link rel="icon" type="image/png" href="/assets/cloud.png">
+    <title>FileDrop</title>
+</head>
+
+<body class="flex flex-col min-h-screen bg-[#fcfcfc]">
+    <%- include("../partials/navbar") %>
+        <main class="max-w-4xl flex flex-col flex-1 gap-17  items-center pt-40 md:pt-35  pb-5 px-6  mx-auto">
+            <div class="flex justify-center lg:justify-between  items-center w-full">
+                <div class="flex flex-col gap-10 text-center lg:text-left">
+                    <div class="flex flex-col lg:justify-start gap-10 max-w-lg">
+                        <a href="/" class="flex justify-center lg:justify-start  gap-2">
+                            <img class="w-9" src="/assets/cloud.png" alt="Cloud Icon">
+                            <h1 class="hidden sm:block text-[1.8rem] font-semibold">File<span
+                                    class="text-blue-500">Drop</span>
+                            </h1>
+                        </a>
+                        <h1 class="text-4xl font-bold">Your files, securely stored.</h1>
+                        <p class=" text-gray-600">Upload, organise, and share your documents — all in one place.
+                            Simple,
+                            private, and always
+                            accessible.</p>
+                    </div>
+                    <div>
+                        <a class="text-white bg-blue-500 hover:bg-blue-300 transition-all duration-300 ease-in-out py-2.5 px-3  rounded-xl mr-3 inline-block"
+                            href="">Sign
+                            Up</a>
+                        <a class="hover:text-gray-500 transition-all duration-300 ease-in-out" href="/">Login</a>
+                    </div>
+                </div>
+                <img class="hidden h-70 lg:block" src="/assets/cloud.png" alt="">
+            </div>
+            <div class="flex justify-center px-6">
+                <div
+                    class="flex justify-center flex-wrap  gap-5 sm:gap-10 lg:gap-17 bg-white shadow-sm py-2 px-5 rounded-xl text-gray-600 shadow-blue-500/20">
+                    <span>Store</span>
+                    <span>View</span>
+                    <span>Manage</span>
+                    <span>Download</span>
+                </div>
+            </div>
+            <div class="grid grid-rows-3  md:grid-cols-3 md:grid-rows-none text-center max-w-4xl mx-auto gap-10">
+                <div
+                    class="flex flex-col gap-5 border-blue-500/50 border-2 rounded-3xl py-4 px-3 transition-all ease-in-out duration-400 hover:-translate-y-2 hover:opacity-60">
+                    <div class="inline-block self-center">
+                        <img class="h-10" src="/assets/upload.png" alt="">
+                    </div>
+                    <h3>Easy Upload</h3>
+                    <p>Upload files easily with just a few clicks</p>
+                </div>
+                <div
+                    class="flex flex-col gap-5 border-blue-500/50 border-2 rounded-3xl py-4 px-3 transition-all ease-in-out duration-400 hover:-translate-y-2 hover:opacity-60">
+                    <div class="inline-block self-center">
+                        <img class="h-10" src="/assets/folder.png" alt="">
+                    </div>
+                    <h3>Organize</h3>
+                    <p>Create folders and keep your files organized</p>
+                </div>
+                <div
+                    class="flex flex-col gap-5 border-blue-500/50 border-2 rounded-3xl py-4 px-3 transition-all ease-in-out duration-400 hover:-translate-y-2 hover:opacity-60">
+                    <div class="inline-block self-center">
+                        <img class="h-10" src="/assets/security.png" alt="">
+                    </div>
+                    <h3>Secure</h3>
+                    <p>Your files are stored securely in the cloud</p>
+                </div>
+            </div>
+        </main>
+
+        <%- include("../partials/footer") %>
+</body>
+
+</html>
