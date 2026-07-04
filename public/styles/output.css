@@ -1006,9 +1006,19 @@
       display: none;
     }
   }
+  .sm\:w-2\/4 {
+    @media (width >= 40rem) {
+      width: calc(2 / 4 * 100%);
+    }
+  }
   .sm\:flex-row {
     @media (width >= 40rem) {
       flex-direction: row;
+    }
+  }
+  .sm\:justify-between {
+    @media (width >= 40rem) {
+      justify-content: space-between;
     }
   }
   .sm\:gap-10 {
