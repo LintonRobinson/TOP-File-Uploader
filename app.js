@@ -53,6 +53,10 @@ app.get("/", (req, res) => {
   res.render("pages/home-page");
 });
 
+app.get("/auth/sign-up", (req, res) => {
+  res.render("pages/sign-up");
+});
+
 // No Path Found Error Fallback
 app.use((req, res, next) => {
   res.status(404).render("pages/error-page");
