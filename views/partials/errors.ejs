@@ -1,0 +1,10 @@
+<% if (locals.errors) { %>
+    <ul class="flex flex-col gap-5 text-center text-red-500">
+        <% errors.forEach(function(error) { %>
+            <li>
+                <%=error.msg%>
+            </li>
+            <% }); %>
+    </ul>
+
+    <%}%>

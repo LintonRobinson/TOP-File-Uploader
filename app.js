@@ -6,6 +6,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const prisma = require("./lib/prisma.js");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
+const authRouter = require("./routers/authRouter.js");
 
 // SSR Static Asset Configuration
 const assetsPath = path.join(__dirname, "public");
@@ -53,9 +54,7 @@ app.get("/", (req, res) => {
   res.render("pages/home-page");
 });
 
-app.get("/auth/sign-up", (req, res) => {
-  res.render("pages/sign-up");
-});
+app.use("/auth", authRouter);
 
 // No Path Found Error Fallback
 app.use((req, res, next) => {

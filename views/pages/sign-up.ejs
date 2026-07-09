@@ -18,19 +18,20 @@
         <main class="flex flex-col flex-1 gap-17 items-center pt-40 sm:pt-30  pb-5 px-6  mx-auto">
             <div class="bg-white shadow-sm rounded-xl p-7 max-w-130 border border-gray-50">
                 <div class="flex flex-col gap-3 border-b border-b-blue-200/80 pb-5">
-                    <h1 class="text-2xl font-bold">Create an Account</h1>
+                    <h1 class="text-2xl font-bold text-center">Create an Account</h1>
                     <span class="text-gray-500">Join FileDrop. Store, organize, and access your files anywhere.</span>
                 </div>
-                <form action="" class="flex flex-col gap-5 pt-5  border-b border-b-blue-200/80 pb-7">
+                <form action="/auth/sign-up" method="POST"
+                    class="flex flex-col gap-5 pt-5  border-b border-b-blue-200/80 pb-7">
                     <div class="flex flex-col gap-5 sm:flex-row">
                         <label class="flex flex-col gap-3 font-semibold text-gray-800 sm:w-2/4">
                             First Name:
-                            <input type="text" placeholder="First Name" name="username" required
+                            <input type="text" placeholder="First Name" name="first_name" required
                                 class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1">
                         </label>
                         <label class="flex flex-col gap-3 font-semibold text-gray-800 sm:w-2/4">
                             Last Name:
-                            <input type="text" placeholder="Last Name" name="lastName" required
+                            <input type="text" placeholder="Last Name" name="last_name" required
                                 class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1 ">
                         </label>
                     </div>
@@ -46,17 +47,25 @@
                     </label>
                     <label class="flex flex-col gap-3 font-semibold text-gray-800">
                         Password:
-                        <input type="password" placeholder="Create a password" name="password" required
+                        <input type="password" autocomplete="new-password" placeholder="Create a password"
+                            name="password" required
                             class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1">
                     </label>
                     <label class="flex flex-col gap-3 font-semibold text-gray-800">
                         Confirm Password:
-                        <input type="password" placeholder="Confirm created password" name="password" required
+                        <input type="password" autocomplete="new-password" placeholder="Confirm created password"
+                            name="confirmed_password" required
                             class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1">
                     </label>
                     <button
                         class="bg-blue-500 px-3 py-3 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out"
                         type="submit">Create Account</button>
+                    <% if(locals.successfulSignUp) { %>
+                        <span class="text-center">Successful sign up. Welcome, <%=username%>! <a
+                                    class="text-blue-500 hover:text-blue-300 transition-all duration-300 ease-in-out"
+                                    href="/login">Login</a></span>
+                        <% }%>
+                            <%- include("../partials/errors") %>
                 </form>
                 <div class="pt-4">
                     <span class="block text-center text-gray-500">Already have an account? <a href="/"

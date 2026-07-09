@@ -17,6 +17,7 @@ model User {
   first_name String
   last_name String
   username String
+  email String @unique
   password String
   files File[]
   is_admin Boolean @default(false)
