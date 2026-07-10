@@ -9,4 +9,8 @@ authRouter.get("/sign-up", (req, res) => {
 
 authRouter.post("/sign-up", validateUser, authController.signUpUser);
 
+authRouter.get("/log-in", (req, res) => {
+  res.render("pages/log-in");
+});
+
 module.exports = authRouter;

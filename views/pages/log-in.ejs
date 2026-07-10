@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles/output.css">
+    <link rel="icon" type="image/png" href="/assets/cloud.png">
+    <title>Log In</title>
+</head>
+
+<body class="flex flex-col min-h-screen bg-[#fcfcfc]">
+    <%- include("../partials/navbar") %>
+        <main class="flex flex-col flex-1 gap-17 items-center pt-40 sm:pt-45  pb-5 px-6  mx-auto">
+            <div class="bg-white shadow-sm rounded-xl p-7 px-15 max-w-130 border border-gray-50">
+                <div class="flex flex-col gap-3 border-b border-b-blue-200/80 pb-5">
+                    <h1 class="text-2xl font-bold text-center">Log In</h1>
+                    <span class="text-gray-500 text-center">Welcome back! Log in to upload and organize.</span>
+                </div>
+                <form action="/auth/log-in" method="POST"
+                    class="flex flex-col gap-5 pt-5  border-b border-b-blue-200/80 pb-7">
+
+                    <label class="flex flex-col gap-3 font-semibold text-gray-800">
+                        <span>Email or Username<span class="text-red-500">*</span>:</span>
+                        <input type="text" placeholder="Email or username" name="login" required
+                            class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1">
+                    </label>
+                    <label class="flex flex-col gap-3 font-semibold text-gray-800">
+                        <span>Password<span class="text-red-500">*</span>:</span>
+                        <input type="password" autocomplete="new-password" placeholder="Enter your password"
+                            name="password" required
+                            class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1">
+                    </label>
+                    <button
+                        class="bg-blue-500 px-3 py-3 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out"
+                        type="submit">Login</button>
+                    <%- include("../partials/errors") %>
+                </form>
+                <div class="pt-4">
+                    <span class="block text-center text-gray-500">Need an account? <a href="/sign-up"
+                            class="text-blue-500 hover:text-blue-300 transition-all duration-300 ease-in-out">Sign
+                            up</a></span>
+                </div>
+            </div>
+        </main>
+
+        <%- include("../partials/footer") %>
+</body>
+
+</html>
