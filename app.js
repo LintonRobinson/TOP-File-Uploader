@@ -6,7 +6,7 @@ const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
 const prisma = require("./lib/prisma.js");
 const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
-const authRouter = require("./routers/authRouter.js");
+const authRouter = require("./routes/authRouter.js");
 
 // SSR Static Asset Configuration
 const assetsPath = path.join(__dirname, "public");
@@ -24,17 +24,15 @@ app.use(express.urlencoded({ extended: true }));
 const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
 
-/*
-
 // Initialize prisma store
-const prismaStore = new PrismaSessionStore({ prisma });
+const prismaStore = new PrismaSessionStore(prisma, { checkPeriod: 15 * 60 * 1000 });
 
 // User sessions
 app.use(
   session({
-  cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000 
-  },
+    cookie: {
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    },
     resave: false,
     saveUninitialized: false,
     secret: process.env.SESSION_SECRET,
@@ -45,13 +43,18 @@ app.use(
 app.use(passport.session());
 
 passport.use(
-  new LocalStrategy(async (username, password, done) => {
+  new LocalStrategy(async (login, password, done) => {
     try {
-    } catch (error) {}
+      console.log(prisma);
+      const userLogin = await prisma.user.findFirst({ where: { OR: [{ email: login }, { username: login }] } });
+      if (!login) {
+        return done(null, false, { message: "Username or email does not exist" });
+      }
+    } catch (error) {
+      return done(error);
+    }
   }),
 );
-
-*/
 
 app.get("/", (req, res) => {
   res.render("pages/home-page");

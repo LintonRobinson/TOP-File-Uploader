@@ -16,7 +16,7 @@ model User {
   id Int @id @default(autoincrement())
   first_name String
   last_name String
-  username String
+  username String @unique
   email String @unique
   password String
   files File[]
@@ -42,4 +42,10 @@ model Folder {
   description String
   created_at DateTime @db.Timestamptz(6) @default(now()) 
   files File[]
+}
+
+model Session {
+  id        String   @id
+  sid       String   @unique
+  expiresAt   DateTime
 }
