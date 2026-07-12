@@ -38,7 +38,16 @@
                     <button
                         class="bg-blue-500 px-3 py-3 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out"
                         type="submit">Login</button>
-                    <%- include("../partials/errors") %>
+                    <% if (locals.loginMessages) { %>
+                        <ul class="flex flex-col gap-5 text-center text-red-500">
+                            <% loginMessages.forEach(function(message) { %>
+                                <li>
+                                    <%=message%>
+                                </li>
+                                <% }); %>
+                        </ul>
+
+                        <%}%>
                 </form>
                 <div class="pt-4">
                     <span class="block text-center text-gray-500">Need an account? <a href="/sign-up"

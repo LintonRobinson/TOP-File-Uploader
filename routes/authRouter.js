@@ -11,9 +11,15 @@ authRouter.get("/sign-up", (req, res) => {
 authRouter.post("/sign-up", validateUser, authController.signUpUser);
 
 authRouter.get("/log-in", (req, res) => {
+  const messages = req.session.messages || [];
+  if (messages.length > 0) res.locals.loginMessages = req.session.messages;
+
   res.render("pages/log-in");
+  if (messages.length > 0) {
+    req.session.messages = [];
+  }
 });
 
-//authRouter.post("/log-in", passport.authenticate("local", { failureMessage: true, failureRedirect: "/log-in" }));
+authRouter.post("/log-in", passport.authenticate("local", { failureMessage: true, failureRedirect: "/auth/log-in" }));
 
 module.exports = authRouter;
