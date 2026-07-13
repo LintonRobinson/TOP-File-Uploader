@@ -74,6 +74,13 @@ passport.deserializeUser(async (userId, done) => {
   }
 });
 
+app.use((req, res, next) => {
+  if (req.isAuthenticated()) {
+    res.locals.user = req.user;
+  }
+  next();
+});
+
 app.get("/", (req, res) => {
   res.render("pages/home-page");
 });
