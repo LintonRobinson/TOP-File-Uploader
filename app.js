@@ -82,7 +82,25 @@ app.use((req, res, next) => {
 });
 
 app.get("/", (req, res) => {
-  res.render("pages/home-page");
+  if (!req.isAuthenticated()) {
+    res.render("pages/home-page");
+  } else {
+    res.redirect("/dashboard");
+  }
+});
+
+app.get("/dashboard", (req, res) => {
+  if (req.isAuthenticated()) {
+    if (Object.hasOwn(req.query, "show_create_folder")) {
+      res.render("pages/dashboard", { showCreateFolder: true });
+    } else if (Object.hasOwn(req.query, "show_upload_files")) {
+      res.render("pages/dashboard", { showUploadFiles: true });
+    } else {
+      res.render("pages/dashboard");
+    }
+  } else {
+    res.redirect("/");
+  }
 });
 
 app.use("/auth", authRouter);

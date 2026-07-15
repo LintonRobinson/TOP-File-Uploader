@@ -6,9 +6,11 @@
         </a>
         <div>
             <% if (locals.user) { %>
-                <a class="hover:text-gray-500 transition-all duration-300 ease-in-out" href="/auth/log-out">Log Out</a>
+                <a class="inline-block bg-blue-500 p-2 text-white rounded-xl  hover:bg-blue-300 transition-all duration-300 ease-in-out"
+                    href="/auth/log-out">Log Out</a>
                 <%} else {%>
-                    <a class="hover:text-gray-500 transition-all duration-300 ease-in-out" href="/auth/log-in">Log
+                    <a class="inline-block hover:text-gray-500 transition-all duration-300 ease-in-out"
+                        href="/auth/log-in">Log
                         In</a>
                     <a class="text-white bg-blue-500 hover:bg-blue-300 transition-all duration-300 ease-in-out py-2.5 px-3 rounded-xl ml-3 text-nowrap inline-block"
                         href="/auth/sign-up">Sign

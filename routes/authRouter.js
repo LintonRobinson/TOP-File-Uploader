@@ -20,7 +20,7 @@ authRouter.get("/log-in", (req, res) => {
   }
 });
 
-authRouter.post("/log-in", passport.authenticate("local", { failureMessage: true, failureRedirect: "/auth/log-in", successRedirect: "/" }));
+authRouter.post("/log-in", passport.authenticate("local", { failureMessage: true, failureRedirect: "/auth/log-in", successRedirect: "/dashboard" }));
 
 authRouter.get("/log-out", (req, res, next) => {
   req.logOut((error) => {

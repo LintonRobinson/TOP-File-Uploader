@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles/output.css">
+    <link rel="icon" type="image/png" href="/assets/cloud.png">
+    <title>FileDrop</title>
+</head>
+
+<body class="flex flex-col min-h-screen bg-[#f9fbff] w-screen">
+    <%- include("../partials/navbar") %>
+        <main class="max-w-6xl w-full flex flex-col flex-1 gap-10 items-center pt-40 md:pt-35  pb-5 px-6  mx-auto">
+            <div class="self-start w-full text-center lg:text-left">
+                <h1 class="w-full  text-4xl font-bold mb-4">Dashboard</h1>
+                <p>Welcome back, <span class="italic font-semibold text-blue-500">
+                        <%=locals.user.username%>
+                    </span></p>
+            </div>
+            <section class="flex flex-wrap sm:flex-row  items-center w-full justify-center gap-8">
+                <% if(!locals.showCreateFolder) { %>
+                    <div
+                        class="w-full flex flex-col gap-5 items-center max-w-xs sm:min-w-xs md:min-h-72 justify-between border rounded-2xl bg-white border-[#d1e3ff] py-5 shadow-xs shadow-[#f3f9ffea]">
+                        <span class="text-lg font-semibold">Create a Folder</span>
+                        <img src="/assets/folder-outline.png" alt="" class="w-1/3">
+                        <a href="/dashboard?show_create_folder"
+                            class="py-2 px-4 rounded-xl bg-blue-500 text-[#f9fbff] cursor-pointer hover:opacity-40 transition-all duration-500 ease-in-out">+
+                            New
+                            Folder</a>
+                    </div>
+                    <% } else{ %>
+                        <div
+                            class="w-full flex flex-col sm:h-72 justify-between items-center max-w-xs sm:min-w-xs border rounded-2xl bg-white border-[#d1e3ff] py-5 shadow-xs shadow-[#f3f9ffea]">
+                            <form action="/auth/log-in" method="POST" class="flex flex-col gap-3 ">
+                                <h3 class="text-lg text-center font-semibold">Create New Folder</h3>
+                                <label class="flex flex-col gap-1.5 font-semibold text-gray-800">
+                                    <span class="text-blue-500">Name<span class="text-red-500">*</span>:</span>
+                                    <input type="text" placeholder="Email or username" name="login" required
+                                        class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1">
+                                </label>
+                                <label class="flex flex-col gap-1.5 font-semibold text-gray-800">
+                                    <span class="text-blue-500">Description<span class="text-red-500">*</span>:</span>
+                                    <textarea type="password" placeholder="Enter your password" name="password" required
+                                        class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1 resize-none"></textarea>
+                                </label>
+                                <div class="w-full flex gap-2">
+                                    <a href="/dashboard"
+                                        class="bg-red-500 px-3 py-1 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out"
+                                        type="submit">Cancel</a>
+                                    <button
+                                        class="bg-blue-500 px-3 py-1 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out"
+                                        type="submit">+ Create Folder</button>
+                                </div>
+                                <% if (locals.loginMessages) { %>
+                                    <ul class="flex flex-col gap-5 text-center text-red-500">
+                                        <% loginMessages.forEach(function(message) { %>
+                                            <li>
+                                                <%=message%>
+                                            </li>
+                                            <% }); %>
+                                    </ul>
+
+                                    <%}%>
+                            </form>
+                        </div>
+                        <%}%>
+                            <div
+                                class="w-full flex flex-col gap-5 items-center md:min-h-72 justify-between max-w-xs sm:min-w-xs border rounded-2xl bg-white border-[#d1e3ff] py-5 shadow-xs shadow-[#f3f9ffea]">
+                                <span class="text-lg font-semibold">View All Files</span>
+                                <img src="/assets/file.png" alt="" class="w-1/3">
+                                <a
+                                    class="py-2 px-4 rounded-xl bg-blue-500 text-[#f9fbff] cursor-pointer hover:opacity-40 transition-all duration-500 ease-in-out">+
+                                    New
+                                    Folder</a>
+
+                            </div>
+                            <% if(!locals.showUploadFiles) { %>
+                                <div
+                                    class="w-full flex flex-col  gap-5 justify-between items-center max-w-xs md:min-h-72 sm:min-w-xs border rounded-2xl bg-white border-[#d1e3ff] py-5 shadow-xs shadow-[#f3f9ffea]">
+                                    <span class="text-lg font-semibold">Upload Files</span>
+                                    <img src="/assets/upload-outline.png" alt="" class="w-1/3">
+                                    <a href="/dashboard?show_upload_files"
+                                        class="py-2 px-4 rounded-xl bg-blue-500 text-[#f9fbff] cursor-pointer hover:opacity-40 transition-all duration-500 ease-in-out">+
+                                        New
+                                        Folder</a>
+                                </div>
+                                <% } else{ %>
+                                    <div
+                                        class="w-full flex flex-col sm:h-72 justify-between items-center max-w-xs sm:min-w-xs border rounded-2xl bg-white border-[#d1e3ff] py-5 px-7 shadow-xs shadow-[#f3f9ffea]">
+                                        <h3 class="text-lg text-center font-semibold mb-9">Upload Files</h3>
+                                        <form action="/auth/log-in" method="POST"
+                                            class="flex flex-col gap-8 w-full grow">
+
+                                            <label class="flex flex-col gap-2 ">
+                                                <span class="text-blue-500 font-semibold">Name<span
+                                                        class="text-red-500">*</span>:</span>
+                                                <input type="file" name="file" required
+                                                    class="flex justify-center  text-sm text-gray-600 file:mr-4 file:py-1 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white file:cursor-pointer file:transition-all file:duration-300 hover:file:bg-blue-600 cursor-pointer">
+                                            </label>
+                                            <div class="w-full flex justify-center gap-2">
+                                                <a href="/dashboard"
+                                                    class="bg-red-500 px-3 py-1 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out"
+                                                    type="submit">Cancel</a>
+                                                <button
+                                                    class="bg-blue-500 px-3 py-1 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out"
+                                                    type="submit">+ Upload File</button>
+                                            </div>
+                                            <% if (locals.loginMessages) { %>
+                                                <ul class="flex flex-col gap-5 text-center text-red-500">
+                                                    <% loginMessages.forEach(function(message) { %>
+                                                        <li>
+                                                            <%=message%>
+                                                        </li>
+                                                        <% }); %>
+                                                </ul>
+
+                                                <%}%>
+                                        </form>
+                                    </div>
+                                    <%}%>
+
+            </section>
+
+        </main>
+
+        <%- include("../partials/footer") %>
+</body>
+
+</html>
