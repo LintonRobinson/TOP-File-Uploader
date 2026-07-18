@@ -15,7 +15,7 @@
 
 <body class="flex flex-col min-h-screen bg-[#f9fbff] w-screen">
     <%- include("../partials/navbar") %>
-        <main class="max-w-6xl w-full flex flex-col flex-1 gap-10 items-center pt-40 md:pt-35  pb-5 px-6  mx-auto">
+        <main class="max-w-6xl w-full flex flex-col flex-1 gap-7 items-center pt-40 md:pt-25  pb-5 px-6  mx-auto">
             <div class="self-start w-full text-center lg:text-left">
                 <h1 class="w-full  text-4xl font-bold mb-4">Dashboard</h1>
                 <p>Welcome back, <span class="italic font-semibold text-blue-500">
@@ -58,6 +58,9 @@
                                         type="submit">+ Create Folder</button>
 
                                 </div>
+                                <% if(locals.successfulFolderCreation) { %>
+                                    <span class="block text-center">Success! <a href="/">Visit Folder Page</a> </span>
+                                    <%}%>
 
                             </form>
                             <%- include("../partials/errors") %>
@@ -84,16 +87,25 @@
                                 <% } else{ %>
                                     <div
                                         class="w-full flex flex-col sm:h-72 justify-center items-center max-w-xs sm:min-w-xs border rounded-2xl bg-white border-[#d1e3ff] py-5 px-7 shadow-xs shadow-[#f3f9ffea]">
-                                        <h3 class="text-lg text-center font-semibold mb-9">Upload Files</h3>
-                                        <form action="/auth/log-in" method="POST"
-                                            class="flex flex-col gap-8 w-full grow mb-2">
-
+                                        <h3 class="text-lg text-center font-semibold mb-3">Upload Files</h3>
+                                        <form action="/file/upload" method="POST" enctype="multipart/form-data"
+                                            class="flex flex-col gap-7 w-full grow mb-2">
                                             <label class="flex flex-col gap-2 ">
+                                                <span class="text-blue-500">Select a Folder:</span>
+                                                <select name="" id=""
+                                                    class="border-[1.7px] rounded-lg border-black p-1 pr-3">
+                                                    <option value="ya">All Files</option>
+                                                </select>
+                                            </label>
+
+                                            <!-- <label class="flex flex-col gap-2 ">
                                                 <span class="text-blue-500 font-semibold">Name<span
                                                         class="text-red-500">*</span>:</span>
                                                 <input type="file" name="file" required
                                                     class="flex justify-center  text-sm text-gray-600 file:mr-4 file:py-1 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white file:cursor-pointer file:transition-all file:duration-300 hover:file:bg-blue-600 cursor-pointer">
-                                            </label>
+                                            </label> -->
+                                            <input type="file" name="file" required
+                                                class="flex justify-center  text-sm text-gray-600 file:mr-4 file:py-1 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white file:cursor-pointer file:transition-all file:duration-300 hover:file:bg-blue-600 cursor-pointer">
                                             <div class="w-full flex justify-center gap-2">
                                                 <a href="/dashboard"
                                                     class="bg-red-500 px-3 py-1 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out"
@@ -104,7 +116,12 @@
                                             </div>
 
                                         </form>
-                                        <%- include("../partials/errors") %>
+                                        <% if (locals.multerError) { %>
+                                            <span class="text-red-500">
+                                                <%=multerError%>
+                                            </span>
+                                            <%}%>
+                                                <%- include("../partials/errors") %>
                                     </div>
                                     <%}%>
 
