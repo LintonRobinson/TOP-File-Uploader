@@ -15,14 +15,14 @@
 
 <body class="flex flex-col min-h-screen bg-[#f9fbff] w-screen">
     <%- include("../partials/navbar") %>
-        <main class="max-w-6xl w-full flex flex-col flex-1 gap-7 items-center pt-40 md:pt-25  pb-5 px-6  mx-auto">
+        <main class="max-w-6xl w-full flex flex-col flex-1 gap-5 items-center pt-40 md:pt-25  pb-5 px-6  mx-auto">
             <div class="self-start w-full text-center lg:text-left">
                 <h1 class="w-full  text-4xl font-bold mb-4">Dashboard</h1>
                 <p>Welcome back, <span class="italic font-semibold text-blue-500">
                         <%=locals.user.username%>
                     </span></p>
             </div>
-            <section class="flex flex-wrap sm:flex-row  items-center w-full justify-center gap-8">
+            <section class="flex flex-wrap sm:flex-row  items-center w-full justify-center xl:justify-between gap-8">
                 <% if(!locals.showCreateFolder) { %>
                     <div
                         class="w-full flex flex-col gap-5 items-center max-w-xs sm:min-w-xs md:min-h-80 justify-between border rounded-2xl bg-white border-[#d1e3ff] py-5 shadow-xs shadow-[#f3f9ffea]">
@@ -92,9 +92,16 @@
                                             class="flex flex-col gap-7 w-full grow mb-2">
                                             <label class="flex flex-col gap-2 ">
                                                 <span class="text-blue-500">Select a Folder:</span>
-                                                <select name="" id=""
+                                                <select name="folder_id"
                                                     class="border-[1.7px] rounded-lg border-black p-1 pr-3">
-                                                    <option value="ya">All Files</option>
+                                                    <option value="no_folder">All Files</option>
+                                                    <% if (locals.userFolders) { %>
+                                                        <% userFolders.forEach(function(folder) { %>
+                                                            <option value="<%= folder.id %>">
+                                                                <%=folder.name%>
+                                                            </option>
+                                                            <% }); %>
+                                                                <%}%>
                                                 </select>
                                             </label>
 
@@ -122,9 +129,23 @@
                                             </span>
                                             <%}%>
                                                 <%- include("../partials/errors") %>
+                                                    <% if (locals.fileId) { %>
+                                                        <span>Success! <a href="<%=fileId%>" class="text-blue-500">View
+                                                                file</a></span>
+                                                        <%}%>
                                     </div>
                                     <%}%>
 
+            </section>
+            <section class="w-full grow flex flex-col gap-3">
+                <div class="flex flex-col text-center justify-between">
+                    <h2 class="text-2xl font-bold">Your Folders</h2>
+                    <span class="italic text-blue-500">Access and Organize Your Files</span>
+                </div>
+                <div
+                    class="grow bg-white border rounded-2xl border-[#d1e3ff] py-5 shadow-xs shadow-[#f3f9ffea] min-h-60">
+
+                </div>
             </section>
 
         </main>

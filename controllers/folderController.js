@@ -12,6 +12,7 @@ async function createFolder(req, res, next) {
       data: {
         name: validatedFolder.folder_name,
         description: validatedFolder.folder_description,
+        user_id: req.user.id,
       },
     });
     res.render("pages/dashboard", { showCreateFolder: true, successfulFolderCreation: true });

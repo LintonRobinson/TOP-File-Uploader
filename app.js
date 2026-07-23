@@ -95,12 +95,13 @@ app.get("/", (req, res) => {
   }
 });
 
-app.get("/dashboard", (req, res) => {
+app.get("/dashboard", async (req, res) => {
   if (req.isAuthenticated()) {
     if (Object.hasOwn(req.query, "show_create_folder")) {
       res.render("pages/dashboard", { showCreateFolder: true });
     } else if (Object.hasOwn(req.query, "show_upload_files")) {
-      res.render("pages/dashboard", { showUploadFiles: true });
+      const userFolders = await prisma.folder.findMany({ where: { user_id: req.user.id } });
+      res.render("pages/dashboard", { showUploadFiles: true, userFolders: userFolders });
     } else {
       res.render("pages/dashboard");
     }
@@ -121,12 +122,13 @@ app.use((req, res, next) => {
 });
 
 // Errors forwarded by next(err)
-app.use((err, req, res, next) => {
+app.use(async (err, req, res, next) => {
   console.error(err);
 
   if (err instanceof multer.MulterError) {
-    console.log("ooo", multer.MulterError);
-    return res.render("pages/dashboard", { showUploadFiles: true, multerError: err.message });
+    const userFolders = await prisma.folder.findMany({ where: { user_id: req.user.id } });
+
+    return res.render("pages/dashboard", { showUploadFiles: true, multerError: err.message, userFolders: userFolders });
   }
 
   res.status(500).render("pages/error-page");
