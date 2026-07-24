@@ -15,7 +15,9 @@ async function createFolder(req, res, next) {
         user_id: req.user.id,
       },
     });
-    res.render("pages/dashboard", { showCreateFolder: true, successfulFolderCreation: true });
+    const userFolders = await prisma.folder.findMany({ where: { user_id: req.user.id } });
+    res.redirect("/dashboard");
+    //res.render("pages/dashboard", { showCreateFolder: true, successfulFolderCreation: true, userFolders: userFolders });
   } catch (error) {
     console.error(error);
     next(error);

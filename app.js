@@ -97,13 +97,13 @@ app.get("/", (req, res) => {
 
 app.get("/dashboard", async (req, res) => {
   if (req.isAuthenticated()) {
+    const userFolders = await prisma.folder.findMany({ where: { user_id: req.user.id } });
     if (Object.hasOwn(req.query, "show_create_folder")) {
-      res.render("pages/dashboard", { showCreateFolder: true });
+      res.render("pages/dashboard", { showCreateFolder: true, userFolders: userFolders });
     } else if (Object.hasOwn(req.query, "show_upload_files")) {
-      const userFolders = await prisma.folder.findMany({ where: { user_id: req.user.id } });
       res.render("pages/dashboard", { showUploadFiles: true, userFolders: userFolders });
     } else {
-      res.render("pages/dashboard");
+      res.render("pages/dashboard", { userFolders: userFolders });
     }
   } else {
     res.redirect("/");
