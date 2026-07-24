@@ -138,13 +138,24 @@
 
             </section>
             <section class="w-full grow flex flex-col gap-3">
-                <div class="flex flex-col text-center justify-between">
+                <div class="flex flex-col sm:flex-row text-center justify-between">
                     <h2 class="text-2xl font-bold">Your Folders</h2>
                     <span class="italic text-blue-500">Access and Organize Your Files</span>
                 </div>
                 <div
-                    class="grow bg-white border rounded-2xl border-[#d1e3ff] py-5 shadow-xs shadow-[#f3f9ffea] min-h-60">
-
+                    class="grow bg-white border rounded-2xl border-[#d1e3ff] p-5 shadow-xs shadow-[#f3f9ffea] min-h-60 relative">
+                    <img src="/assets/folder-outline.png" class="w-8 mb-2" alt="">
+                    <h4 class="text-xl font-semibold">No Created Folders</h4>
+                    <div class="flex flex-col absolute bottom-5 left-5 right-5">
+                        <% if(locals.showCreateFolder){ %>
+                            <span class="italic text-s text-center">Use the form above to create your first
+                                folder</span>
+                            <% } %>
+                                <a href="/dashboard?show_create_folder"
+                                    class="text-center mt-3 py-3 bg-blue-500 rounded-md  text-white hover:opacity-40 transition-all duration-500 ease-in-out">Create
+                                    Your First
+                                    Folder</a>
+                    </div>
                 </div>
             </section>
 

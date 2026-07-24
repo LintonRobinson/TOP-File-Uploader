@@ -18,16 +18,17 @@ async function uploadFile(req, res) {
   }
   const validatedFileFolder = matchedData(req);
 
-  const assetUrl = await uploadToCloudinaryFromBuffer(req.file.buffer);
-  const fileProperties = { user_id: req.user.id, name: req.file.originalname, file_url: assetUrl.url, file_size: req.file.size };
+  const asset = await uploadToCloudinaryFromBuffer(req.file.buffer);
+  const downloadUrl = `https://res.cloudinary.com/mkigiypd/${asset.resource_type}/upload/fl_attachment/${asset.asset_folder}/${asset.display_name}`;
+  const fileProperties = { user_id: req.user.id, name: req.file.originalname, file_url: asset.secure_url, file_size: String(req.file.size), download_url: downloadUrl };
   if (validatedFileFolder.folder_id !== "no_folder") fileProperties.folder_id = validatedFileFolder.folder_id;
   await prisma.file.create({
     data: {
       ...fileProperties,
     },
   });
-  const file = await prisma.file.findFirst({ where: { file_url: assetUrl.url } });
-  res.render("pages/dashboard", { showUploadFiles: true, userFolders: userFolders, fileId: assetUrl.url });
+  const file = await prisma.file.findFirst({ where: { file_url: asset.secure_url } });
+  res.render("pages/dashboard", { showUploadFiles: true, userFolders: userFolders, fileId: asset.secure_url });
 }
 
 function uploadToCloudinaryFromBuffer(buffer) {

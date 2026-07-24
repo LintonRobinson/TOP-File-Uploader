@@ -28,6 +28,7 @@ model File {
   id String @id @default(cuid())
   name String
   file_url String
+  download_url String
   file_size String
   upload_time DateTime @db.Timestamptz(6) @default(now()) 
   user User @relation(fields: [user_id],references: [id])
