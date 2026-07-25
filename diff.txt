@@ -1,0 +1,326 @@
+diff --git a/controllers/folderController.js b/controllers/folderController.js
+index 192cb82..f417989 100644
+--- a/controllers/folderController.js
++++ b/controllers/folderController.js
+@@ -15,7 +15,7 @@ async function createFolder(req, res, next) {
+         user_id: req.user.id,
+       },
+     });
+-    const userFolders = await prisma.folder.findMany({ where: { user_id: req.user.id } });
++    //const userFolders = await prisma.folder.findMany({ where: { user_id: req.user.id } });
+     res.redirect("/dashboard");
+     //res.render("pages/dashboard", { showCreateFolder: true, successfulFolderCreation: true, userFolders: userFolders });
+   } catch (error) {
+@@ -24,4 +24,30 @@ async function createFolder(req, res, next) {
+   }
+ }
+ 
+-module.exports = { createFolder };
++async function updateFolder(req, res, next) {
++  const validatedFolder = matchedData(req);
++
++  const folderId = req.params.folderId;
++  try {
++    const updatedFolder = await prisma.folder.update({
++      where: {
++        id: folderId,
++      },
++      data: {
++        name: validatedFolder.folder_name,
++        description: validatedFolder.folder_description,
++      },
++    });
++
++    const folder = await prisma.folder.findUnique({
++      where: {
++        id: folderId,
++      },
++    });
++    res.render("pages/folder-page", { folder: folder });
++  } catch (error) {
++    next(error);
++  }
++}
++
++module.exports = { createFolder, updateFolder };
+diff --git a/public/styles/output.css b/public/styles/output.css
+index 593f4ca..7e63baf 100644
+--- a/public/styles/output.css
++++ b/public/styles/output.css
+@@ -238,6 +238,9 @@
+   .relative {
+     position: relative;
+   }
++  .right-0 {
++    right: 0;
++  }
+   .right-5 {
+     right: calc(var(--spacing) * 5);
+   }
+@@ -331,6 +334,9 @@
+   .h-15 {
+     height: calc(var(--spacing) * 15);
+   }
++  .h-40 {
++    height: calc(var(--spacing) * 40);
++  }
+   .h-50 {
+     height: calc(var(--spacing) * 50);
+   }
+@@ -436,6 +442,9 @@
+   .w-10 {
+     width: calc(var(--spacing) * 10);
+   }
++  .w-15 {
++    width: calc(var(--spacing) * 15);
++  }
+   .w-20 {
+     width: calc(var(--spacing) * 20);
+   }
+@@ -568,12 +577,21 @@
+   .items-center {
+     align-items: center;
+   }
++  .items-end {
++    align-items: flex-end;
++  }
++  .items-start {
++    align-items: flex-start;
++  }
+   .justify-between {
+     justify-content: space-between;
+   }
+   .justify-center {
+     justify-content: center;
+   }
++  .justify-end {
++    justify-content: flex-end;
++  }
+   .gap-1 {
+     gap: var(--spacing);
+   }
+@@ -622,6 +640,9 @@
+   .self-center {
+     align-self: center;
+   }
++  .self-end {
++    align-self: flex-end;
++  }
+   .self-start {
+     align-self: flex-start;
+   }
+@@ -674,6 +695,14 @@
+     border-style: var(--tw-border-style);
+     border-width: 1.7px;
+   }
++  .border-y-\[0\.8px\] {
++    border-block-style: var(--tw-border-style);
++    border-block-width: 0.8px;
++  }
++  .border-y-\[1\.7px\] {
++    border-block-style: var(--tw-border-style);
++    border-block-width: 1.7px;
++  }
+   .border-t {
+     border-top-style: var(--tw-border-style);
+     border-top-width: 1px;
+@@ -682,6 +711,14 @@
+     border-top-style: var(--tw-border-style);
+     border-top-width: 0.8px;
+   }
++  .border-r {
++    border-right-style: var(--tw-border-style);
++    border-right-width: 1px;
++  }
++  .border-r-2 {
++    border-right-style: var(--tw-border-style);
++    border-right-width: 2px;
++  }
+   .border-b {
+     border-bottom-style: var(--tw-border-style);
+     border-bottom-width: 1px;
+@@ -690,9 +727,24 @@
+     border-bottom-style: var(--tw-border-style);
+     border-bottom-width: 2px;
+   }
++  .border-\[\#acccff\] {
++    border-color: #acccff;
++  }
++  .border-\[\#b9d0ff87\] {
++    border-color: #b9d0ff87;
++  }
++  .border-\[\#b9d0ff\] {
++    border-color: #b9d0ff;
++  }
++  .border-\[\#b9d0ffac\] {
++    border-color: #b9d0ffac;
++  }
+   .border-\[\#d1e3ff\] {
+     border-color: #d1e3ff;
+   }
++  .border-\[\#f9fbff\] {
++    border-color: #f9fbff;
++  }
+   .border-black {
+     border-color: var(--color-black);
+   }
+@@ -777,6 +829,9 @@
+   .bg-\[\#fcfcfc\] {
+     background-color: #fcfcfc;
+   }
++  .bg-black {
++    background-color: var(--color-black);
++  }
+   .bg-blue-500 {
+     background-color: var(--color-blue-500);
+   }
+@@ -867,6 +922,9 @@
+   .py-1 {
+     padding-block: var(--spacing);
+   }
++  .py-1\.5 {
++    padding-block: calc(var(--spacing) * 1.5);
++  }
+   .py-2 {
+     padding-block: calc(var(--spacing) * 2);
+   }
+@@ -927,6 +985,9 @@
+   .pr-3 {
+     padding-right: calc(var(--spacing) * 3);
+   }
++  .pr-5 {
++    padding-right: calc(var(--spacing) * 5);
++  }
+   .pb-2 {
+     padding-bottom: calc(var(--spacing) * 2);
+   }
+@@ -954,6 +1015,9 @@
+   .text-left {
+     text-align: left;
+   }
++  .align-middle {
++    vertical-align: middle;
++  }
+   .text-2xl {
+     font-size: var(--text-2xl);
+     line-height: var(--tw-leading, var(--text-2xl--line-height));
+@@ -1380,6 +1444,11 @@
+       padding-top: calc(var(--spacing) * 25);
+     }
+   }
++  .md\:pt-30 {
++    @media (width >= 48rem) {
++      padding-top: calc(var(--spacing) * 30);
++    }
++  }
+   .md\:pt-35 {
+     @media (width >= 48rem) {
+       padding-top: calc(var(--spacing) * 35);
+diff --git a/routes/folderRouter.js b/routes/folderRouter.js
+index 72be373..96e95e7 100644
+--- a/routes/folderRouter.js
++++ b/routes/folderRouter.js
+@@ -2,6 +2,22 @@ const { Router } = require("express");
+ const folderRouter = Router();
+ const validateFolder = require("../middleware/validators/folderValidator.js");
+ const folderController = require("../controllers/folderController.js");
++const prisma = require("../lib/prisma.js");
+ folderRouter.post("/create", validateFolder, folderController.createFolder);
++folderRouter.post("/:folderId/update", validateFolder, folderController.updateFolder);
++
++folderRouter.get("/:folderId", async (req, res) => {
++  const folderId = req.params.folderId;
++  const folder = await prisma.folder.findUnique({
++    where: {
++      id: folderId,
++    },
++  });
++  if (Object.hasOwn(req.query, "rename_folder")) {
++    return res.render("pages/folder-page", { renameFolder: true, folder: folder });
++  }
++
++  res.render("pages/folder-page", { folder: folder });
++});
+ 
+ module.exports = folderRouter;
+diff --git a/views/pages/folder-page.ejs b/views/pages/folder-page.ejs
+new file mode 100644
+index 0000000..61e9710
+--- /dev/null
++++ b/views/pages/folder-page.ejs
+@@ -0,0 +1,74 @@
++<!DOCTYPE html>
++<html lang="en">
++
++<head>
++    <meta charset="UTF-8">
++    <meta name="viewport" content="width=device-width, initial-scale=1.0">
++    <link rel="preconnect" href="https://fonts.googleapis.com">
++    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
++    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap"
++        rel="stylesheet">
++    <link rel="stylesheet" href="/styles/output.css">
++    <link rel="icon" type="image/png" href="/assets/cloud.png">
++    <title>FileDrop</title>
++</head>
++
++<body class="flex flex-col min-h-screen bg-[#f9fbff] w-screen">
++    <%- include("../partials/navbar") %>
++        <main class="max-w-6xl w-full flex flex-col flex-1 gap-5 pt-40 md:pt-30  pb-5 px-6  mx-auto">
++            <div class="flex flex-col gap-5">
++                <div class="flex gap-8 items-center relative">
++                    <div class="flex gap-5 border-r border-[#d1e3ff] pr-5">
++                        <img src="/assets/folder-outline.png" alt="folder icon" class="w-15">
++                        <h1 class="text-3xl font-semibold flex items-center">
++                            <%=folder.name%>
++                        </h1>
++
++                    </div>
++                    <div class="flex items-center gap-5">
++                        <%if(!locals.renameFolder){%>
++                            <a href="/folder/<%=folder.id%>?rename_folder"
++                                class="bg-blue-500 px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out">Rename</a>
++                            <%}%>
++
++                                <a href="/"
++                                    class="bg-red-500 px-5 py-1.5 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out">Delete</a>
++                    </div>
++                    <a href="/folder/<%=folder.id%>?rename_folder"
++                        class="bg-black px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out absolute right-0">Share
++                        Folder</a>
++                </div>
++                <p>
++                    <%=folder.description%>
++                </p>
++                <%if(locals.renameFolder){%>
++                    <form action="/folder/<%=folder.id%>/update" method="POST"
++                        class="py-4 bg- border-y-[0.8px] border-[#b9d0ffac] flex gap-4">
++                        <label class="flex flex-col gap-1.5 font-semibold text-gray-800 justify-end">
++                            <span class="text-blue-500">Folder Name<span class="text-red-500">*</span>:</span>
++                            <input placeholder="Folder name" value="<%=folder.name%>" name="folder_name"
++                                class="h-10 font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1"
++                                type="text">
++
++                        </label>
++                        <label class="flex flex-col gap-1.5 font-semibold text-gray-800">
++                            <span class="text-blue-500">Folder Description<span class="text-red-500">*</span>:</span>
++                            <textarea placeholder="Folder description" name="folder_description" required
++                                class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1 resize-none"><%=folder.description%></textarea>
++                        </label>
++                        <button
++                            class="self-end bg-blue-500 px-3 py-2 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out"
++                            type="submit">Rename Folder</button>
++                        <a href="/folder/<%=folder.id%>"
++                            class="self-end bg-red-500 flex items-center px-5 py-2 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out">Cancel</a>
++
++                    </form>
++                    <%}%>
++
++            </div>
++        </main>
++
++        <%- include("../partials/footer") %>
++</body>
++
++</html>
+\ No newline at end of file

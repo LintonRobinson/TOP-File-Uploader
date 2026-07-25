@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Google+Sans+Flex:opsz,wght@6..144,1..1000&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="/styles/output.css">
+    <link rel="icon" type="image/png" href="/assets/cloud.png">
+    <title>FileDrop</title>
+</head>
+
+<body class="flex flex-col min-h-screen bg-[#f9fbff] w-screen">
+    <%- include("../partials/navbar") %>
+        <main class="max-w-6xl w-full flex flex-col flex-1 gap-5 pt-40 md:pt-30  pb-5 px-6  mx-auto">
+            <div class="flex flex-col gap-5">
+                <div class="flex gap-8 items-center relative">
+                    <div class="flex gap-5 border-r border-[#d1e3ff] pr-5">
+                        <img src="/assets/folder-outline.png" alt="folder icon" class="w-15">
+                        <h1 class="text-3xl font-semibold flex items-center">
+                            <%=folder.name%>
+                        </h1>
+
+                    </div>
+                    <div class="flex items-center gap-5">
+                        <%if(!locals.renameFolder){%>
+                            <a href="/folder/<%=folder.id%>?rename_folder"
+                                class="bg-blue-500 px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out">Rename</a>
+                            <%}%>
+
+                                <a href="/"
+                                    class="bg-red-500 px-5 py-1.5 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out">Delete</a>
+                    </div>
+                    <a href="/folder/<%=folder.id%>?rename_folder"
+                        class="bg-black px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out absolute right-0">Share
+                        Folder</a>
+                </div>
+                <p>
+                    <%=folder.description%>
+                </p>
+                <%if(locals.renameFolder){%>
+                    <form action="/folder/<%=folder.id%>/update" method="POST"
+                        class="py-4 bg- border-y-[0.8px] border-[#b9d0ffac] flex gap-4">
+                        <label class="flex flex-col gap-1.5 font-semibold text-gray-800 justify-end">
+                            <span class="text-blue-500">Folder Name<span class="text-red-500">*</span>:</span>
+                            <input placeholder="Folder name" value="<%=folder.name%>" name="folder_name"
+                                class="h-10 font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1"
+                                type="text">
+
+                        </label>
+                        <label class="flex flex-col gap-1.5 font-semibold text-gray-800">
+                            <span class="text-blue-500">Folder Description<span class="text-red-500">*</span>:</span>
+                            <textarea placeholder="Folder description" name="folder_description" required
+                                class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1 resize-none"><%=folder.description%></textarea>
+                        </label>
+                        <button
+                            class="self-end bg-blue-500 px-3 py-2 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out"
+                            type="submit">Rename Folder</button>
+                        <a href="/folder/<%=folder.id%>"
+                            class="self-end bg-red-500 flex items-center px-5 py-2 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out">Cancel</a>
+
+                    </form>
+                    <%}%>
+
+            </div>
+        </main>
+
+        <%- include("../partials/footer") %>
+</body>
+
+</html>
