@@ -30,9 +30,13 @@
                             <a href="/folder/<%=folder.id%>?rename_folder"
                                 class="bg-blue-500 px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out">Rename</a>
                             <%}%>
+                                <form action="/folder/<%=folder.id%>/delete" method="POST">
+                                    <button
+                                        class="bg-red-500 px-5 py-1.5 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out"
+                                        type="submit">Delete Folder & Files</button>
+                                </form>
 
-                                <a href="/"
-                                    class="bg-red-500 px-5 py-1.5 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out">Delete</a>
+
                     </div>
                     <a href="/folder/<%=folder.id%>?rename_folder"
                         class="bg-black px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out absolute right-0">Share

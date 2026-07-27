@@ -5,6 +5,7 @@ const folderController = require("../controllers/folderController.js");
 const prisma = require("../lib/prisma.js");
 folderRouter.post("/create", validateFolder, folderController.createFolder);
 folderRouter.post("/:folderId/update", validateFolder, folderController.updateFolder);
+folderRouter.post("/:folderId/delete", folderController.deleteFolder);
 
 folderRouter.get("/:folderId", async (req, res) => {
   const folderId = req.params.folderId;

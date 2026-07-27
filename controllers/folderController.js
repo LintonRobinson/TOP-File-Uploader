@@ -1,5 +1,13 @@
 const { validationResult, matchedData } = require("express-validator");
 const prisma = require("../lib/prisma.js");
+const cloudinary = require("cloudinary").v2;
+cloudinary.config({
+  cloud_name: "mkigiypd",
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+  secure: true,
+});
+
 async function createFolder(req, res, next) {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -45,4 +53,37 @@ async function updateFolder(req, res, next) {
   }
 }
 
-module.exports = { createFolder, updateFolder };
+async function deleteFolder(req, res, next) {
+  const folderId = req.params.folderId;
+  const files = await prisma.file.findMany({
+    where: {
+      folder_id: folderId,
+    },
+  });
+
+  files.forEach(async (file) => {
+    await Promise.all(files.map((file) => cloudinary.uploader.destroy(file.public_id)));
+  });
+
+  try {
+    await prisma.file.deleteMany({
+      where: {
+        folder_id: folderId,
+      },
+    });
+    await prisma.folder.delete({
+      where: {
+        id: folderId,
+      },
+    });
+
+    // get files in folder for feach destroy
+
+    res.redirect("/dashboard");
+  } catch (error) {
+    console.error(error);
+    next(error);
+  }
+}
+
+module.exports = { createFolder, updateFolder, deleteFolder };
