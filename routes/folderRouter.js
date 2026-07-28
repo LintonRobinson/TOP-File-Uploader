@@ -3,7 +3,6 @@ const folderRouter = Router();
 const validateFolder = require("../middleware/validators/folderValidator.js");
 const folderController = require("../controllers/folderController.js");
 const prisma = require("../lib/prisma.js");
-const { uploadFile } = require("../controllers/fileController.js");
 folderRouter.post("/create", validateFolder, folderController.createFolder);
 folderRouter.post("/:folderId/update", validateFolder, folderController.updateFolder);
 folderRouter.post("/:folderId/delete", folderController.deleteFolder);

@@ -90,22 +90,16 @@
                         <% if(!locals.userFiles.length){%>
                             <h4 class="text-2xl text-center font-semibold">No Created Files</h4>
                             <img src="/assets/no-file.png" class="w-10 mb-2" alt="folder icon">
-                            <p class="max-w-sm text-center">Nothing here yet — create a folder to start organizing your
-                                files.</p>
+                            <p class="max-w-sm text-center">Nothing here yet — upload a file to start organizing.</p>
                             <div class="flex flex-col absolute bottom-5 left-5 right-5">
-                                <% if(locals.showCreateFile){ %>
-                                    <span class="italic text-s text-center">Use the form above to create your first
-                                        folder</span>
-                                    <% } %>
-                                        <a href="/folder/<%=folder.id%>?show_upload_file"
-                                            class="text-center mt-3 py-3 bg-blue-500 rounded-md  text-white hover:opacity-40 transition-all duration-500 ease-in-out">Upload
-                                            a File</a>
-
+                                <a href="/folder/<%=folder.id%>?show_upload_file"
+                                    class="text-center mt-3 py-3 bg-blue-500 rounded-md  text-white hover:opacity-40 transition-all duration-500 ease-in-out">Upload
+                                    a File</a>
                             </div>
                             <%} else {%>
                                 <div class="flex flex-col gap-4">
                                     <h4 class="text-xl font-semibold">
-                                        <%=userFiles.length%> Files(s)
+                                        <%=userFiles.length%> File(s)
                                     </h4>
                                     <div
                                         class="grid grid-cols-1 min-[430px]:grid-cols-2 sm:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 gap-5 max-h-110 overflow-y-auto pt-6 border-t border-[#d1e3ff]">
