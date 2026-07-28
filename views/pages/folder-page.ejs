@@ -15,64 +15,124 @@
 
 <body class="flex flex-col min-h-screen bg-[#f9fbff] w-screen">
     <%- include("../partials/navbar") %>
-        <main class="max-w-6xl w-full flex flex-col flex-1 gap-5 pt-40 md:pt-30  pb-5 px-6  mx-auto">
-            <div class="flex flex-col gap-5">
-                <div class="flex gap-8 items-center relative">
-                    <div class="flex gap-5 border-r border-[#d1e3ff] pr-5">
-                        <img src="/assets/folder-outline.png" alt="folder icon" class="w-15">
-                        <h1 class="text-3xl font-semibold flex items-center">
-                            <%=folder.name%>
-                        </h1>
-
-                    </div>
-                    <div class="flex items-center gap-5">
-                        <%if(!locals.renameFolder){%>
-                            <a href="/folder/<%=folder.id%>?rename_folder"
-                                class="bg-blue-500 px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out">Rename</a>
-                            <%}%>
-                                <form action="/folder/<%=folder.id%>/delete" method="POST">
-                                    <button
-                                        class="bg-red-500 px-5 py-1.5 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out"
-                                        type="submit">Delete Folder & Files</button>
-                                </form>
-
-
-                    </div>
+        <%- include("../partials/upload-file") %>
+            <main class="max-w-6xl w-full flex flex-col flex-1 gap-5 pt-40 sm:pt-28  pb-5 px-6  mx-auto">
+                <section class="flex flex-col gap-5">
                     <a href="/folder/<%=folder.id%>?rename_folder"
-                        class="bg-black px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out absolute right-0">Share
+                        class="sm:absolute sm:right-6 self-center bg-black px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out">Share
                         Folder</a>
-                </div>
-                <p>
-                    <%=folder.description%>
-                </p>
-                <%if(locals.renameFolder){%>
-                    <form action="/folder/<%=folder.id%>/update" method="POST"
-                        class="py-4 bg- border-y-[0.8px] border-[#b9d0ffac] flex gap-4">
-                        <label class="flex flex-col gap-1.5 font-semibold text-gray-800 justify-end">
-                            <span class="text-blue-500">Folder Name<span class="text-red-500">*</span>:</span>
-                            <input placeholder="Folder name" value="<%=folder.name%>" name="folder_name"
-                                class="h-10 font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1"
-                                type="text">
+                    <div class="flex flex-col min-[500px]:flex-row gap-8 items-center relative">
 
-                        </label>
-                        <label class="flex flex-col gap-1.5 font-semibold text-gray-800">
-                            <span class="text-blue-500">Folder Description<span class="text-red-500">*</span>:</span>
-                            <textarea placeholder="Folder description" name="folder_description" required
-                                class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1 resize-none"><%=folder.description%></textarea>
-                        </label>
-                        <button
-                            class="self-end bg-blue-500 px-3 py-2 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out"
-                            type="submit">Rename Folder</button>
-                        <a href="/folder/<%=folder.id%>"
-                            class="self-end bg-red-500 flex items-center px-5 py-2 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out">Cancel</a>
+                        <div
+                            class="flex gap-5 border-b min-[500px]:border-b-0 min-[500px]:border-r border-[#d1e3ff] pb-5 min-[500px]:pr-5 min-[500px]:pb-0">
+                            <img src="/assets/folder-outline.png" alt="folder icon" class="w-15">
+                            <h1 class="text-3xl font-semibold flex items-center">
+                                <%=folder.name%>
+                            </h1>
 
-                    </form>
-                    <%}%>
+                        </div>
+                        <div class="flex  items-center gap-5">
+                            <%if(!locals.renameFolder){%>
+                                <a href="/folder/<%=folder.id%>?rename_folder"
+                                    class="bg-blue-500 px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out">Rename</a>
+                                <%}%>
+                                    <form action="/folder/<%=folder.id%>/delete" method="POST">
+                                        <button
+                                            class="bg-red-500 px-5 py-1.5 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out"
+                                            type="submit">Delete Folder & Files</button>
+                                    </form>
 
-            </div>
-        </main>
 
-        <%- include("../partials/footer") %>
+                        </div>
+
+                    </div>
+                    <p class="text-center min-[500px]:text-left">
+                        <%=folder.description%>
+                    </p>
+                    <%if(locals.renameFolder){%>
+                        <form action="/folder/<%=folder.id%>/update" method="POST"
+                            class="py-4 bg- border-y-[0.8px] border-[#b9d0ffac] flex flex-col sm:flex-row gap-4 justify-center items-center">
+
+                            <label class="flex flex-col gap-1.5 font-semibold text-gray-800 justify-end">
+                                <span class="text-blue-500">Folder Name<span class="text-red-500">*</span>:</span>
+                                <input placeholder="Folder name" value="<%=folder.name%>" name="folder_name"
+                                    class="h-10 font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1"
+                                    type="text">
+
+                            </label>
+                            <label class="flex flex-col gap-1.5 font-semibold text-gray-800">
+                                <span class="text-blue-500">Folder Description<span
+                                        class="text-red-500">*</span>:</span>
+                                <textarea placeholder="Folder description" name="folder_description" required
+                                    class="font-normal border-[1.7px] border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 px-2 py-1 resize-none"><%=folder.description%></textarea>
+                            </label>
+                            <div class="flex sm:flex-col gap-3">
+
+                                <a href="/folder/<%=folder.id%>"
+                                    class="bg-red-500 flex items-center justify-center px-5 py-2 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out">Cancel</a>
+                                <button
+                                    class="bg-blue-500 px-3 py-2 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out"
+                                    type="submit">Rename Folder</button>
+                            </div>
+
+                        </form>
+                        <%}%>
+
+                </section>
+                <section class="w-full grow flex flex-col gap-3">
+                    <div class="flex flex-col sm:flex-row text-center justify-between">
+                        <h2 class="text-2xl font-bold">Your Files (<%=userFiles.length%>)</h2>
+                        <span class="italic text-blue-500">Access and Organize Your Files</span>
+                    </div>
+                    <div
+                        class="flex flex-col items-center gap-5 grow bg-white border rounded-2xl border-[#d1e3ff] p-5 shadow-xs shadow-[#f3f9ffea] min-h-60 relative">
+                        <img src="/assets/file.png" class="self-start w-8 mb-2" alt="folder icon">
+                        <% if(!locals.userFiles.length){%>
+                            <h4 class="text-2xl text-center font-semibold">No Created Files</h4>
+                            <img src="/assets/no-file.png" class="w-10 mb-2" alt="folder icon">
+                            <p class="max-w-sm text-center">Nothing here yet — create a folder to start organizing your
+                                files.</p>
+                            <div class="flex flex-col absolute bottom-5 left-5 right-5">
+                                <% if(locals.showCreateFile){ %>
+                                    <span class="italic text-s text-center">Use the form above to create your first
+                                        folder</span>
+                                    <% } %>
+                                        <a href="/folder/<%=folder.id%>?show_upload_file"
+                                            class="text-center mt-3 py-3 bg-blue-500 rounded-md  text-white hover:opacity-40 transition-all duration-500 ease-in-out">Upload
+                                            a File</a>
+
+                            </div>
+                            <%} else {%>
+                                <div class="flex flex-col gap-4">
+                                    <h4 class="text-xl font-semibold">
+                                        <%=userFiles.length%> Files(s)
+                                    </h4>
+                                    <div
+                                        class="grid grid-cols-1 min-[430px]:grid-cols-2 sm:grid-cols-3  lg:grid-cols-4 xl:grid-cols-5 gap-5 max-h-110 overflow-y-auto pt-6 border-t border-[#d1e3ff]">
+                                        <% userFiles.forEach(function(file) { %>
+                                            <div
+                                                class="flex flex-col gap-4 justify-between border rounded-xl border-[#d1e3ff] p-3 shadow-xs shadow-[#f3f9ffea] min-h-35">
+                                                <img src="/assets/folder-outline.png" class="w-4 mb-2"
+                                                    alt="folder icon">
+                                                <span class="text-center font-semibold">
+                                                    <%=file.name%>
+                                                </span>
+                                                <a href="/folder/<%=folder.id%>"
+                                                    class="text-center mt-3 py-1 px-2 bg-blue-500 rounded-md  text-white hover:opacity-40 transition-all duration-500 ease-in-out">View
+                                                    File</a>
+
+                                            </div>
+                                            <% }); %>
+
+                                    </div>
+                                </div>
+                                <%}%>
+
+                    </div>
+                </section>
+            </main>
+
+            <%- include("../partials/footer") %>
 </body>
 
 </html>

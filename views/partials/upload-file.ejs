@@ -1,0 +1,42 @@
+<% if(locals.uploadFile) { %>
+    <div role="dialog" aria-modal="true"
+        class="flex justify-center items-center z-5 absolute top-0 left-0 w-screen h-screen bg-black/80 ">
+        <div
+            class="opacity-100 w-full flex flex-col justify-center items-center max-w-md sm:min-w-xs border rounded-2xl bg-white border-[#d1e3ff] py-14 px-20 shadow-xs shadow-[#f3f9ffea]">
+            <h3 class="text-xl text-center font-semibold mb-7">Upload Files</h3>
+            <form action="/file/upload" method="POST" enctype="multipart/form-data"
+                class="flex flex-col gap-8 w-full mb-2">
+                <label class="flex flex-col gap-2 ">
+                    <select name="folder_id" class="border-[1.7px] rounded-lg border-black p-1 pr-3">
+                        <option value="<%= folder.id %>">
+                            <%=folder.name%>
+                        </option>
+                    </select>
+                </label>
+
+
+                <input type="file" name="file" required
+                    class="flex justify-center  text-sm text-gray-600 file:mr-4 file:py-1 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white file:cursor-pointer file:transition-all file:duration-300 hover:file:bg-blue-600 cursor-pointer">
+                <div class="w-full flex justify-center gap-2">
+                    <a href="/folder/<%=folder.id%>"
+                        class="bg-red-500 px-3 py-1 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out"
+                        type="submit">Cancel</a>
+                    <button
+                        class="bg-blue-500 px-3 py-1 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out"
+                        type="submit">+ Upload File</button>
+                </div>
+
+            </form>
+            <% if (locals.multerError) { %>
+                <span class="text-red-500">
+                    <%=multerError%>
+                </span>
+                <%}%>
+                    <%- include("../partials/errors") %>
+                        <% if (locals.fileId) { %>
+                            <span>Success! <a href="<%=fileId%>" class="text-blue-500">View
+                                    file</a></span>
+                            <%}%>
+        </div>
+    </div>
+    <%}%>
