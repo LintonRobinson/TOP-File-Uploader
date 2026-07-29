@@ -6,7 +6,7 @@ validateFile = [
     .trim()
     .escape()
     .custom(async (value, { req }) => {
-      if (value === "no_folder") return true;
+      if (value === "no_folder" || value === "all") return true;
       const folder = await prisma.folder.findFirst({
         where: { id: value, user_id: req.user.id },
       });

@@ -97,6 +97,7 @@ app.get("/", (req, res) => {
 
 app.get("/dashboard", async (req, res) => {
   if (req.isAuthenticated()) {
+    res.locals.homePath = true;
     const userFolders = await prisma.folder.findMany({ where: { user_id: req.user.id } });
     if (Object.hasOwn(req.query, "show_create_folder")) {
       res.render("pages/dashboard", { showCreateFolder: true, userFolders: userFolders });
@@ -115,6 +116,15 @@ app.use("/auth", authRouter);
 app.use("/folder", folderRouter);
 
 app.use("/file", fileRouter);
+
+app.get("/back", (req, res) => {
+  const backUrl = req.get("Referrer");
+  const isSameOrigin = backUrl && new URL(backUrl).origin === req.get("origin") ? req.protocol + "://" + req.get("host") : null;
+  // simpler: just check the referrer starts with your own host
+  const safeUrl = backUrl && backUrl.startsWith(`${req.protocol}://${req.get("host")}`) ? backUrl : "/";
+  console.log(safeUrl);
+  res.redirect(safeUrl);
+});
 
 // No Path Found Error Fallback
 app.use((req, res, next) => {

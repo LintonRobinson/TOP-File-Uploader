@@ -248,11 +248,17 @@
   .right-5 {
     right: calc(var(--spacing) * 5);
   }
+  .right-7 {
+    right: calc(var(--spacing) * 7);
+  }
   .bottom-0 {
     bottom: 0;
   }
   .bottom-5 {
     bottom: calc(var(--spacing) * 5);
+  }
+  .bottom-7 {
+    bottom: calc(var(--spacing) * 7);
   }
   .left-0 {
     left: 0;
@@ -268,6 +274,9 @@
   }
   .z-9 {
     z-index: 9;
+  }
+  .z-10 {
+    z-index: 10;
   }
   .col-span-full {
     grid-column: 1 / -1;
@@ -295,6 +304,9 @@
   }
   .mb-5 {
     margin-bottom: calc(var(--spacing) * 5);
+  }
+  .mb-6 {
+    margin-bottom: calc(var(--spacing) * 6);
   }
   .mb-7 {
     margin-bottom: calc(var(--spacing) * 7);
@@ -341,8 +353,14 @@
   .h-10 {
     height: calc(var(--spacing) * 10);
   }
+  .h-12 {
+    height: calc(var(--spacing) * 12);
+  }
   .h-15 {
     height: calc(var(--spacing) * 15);
+  }
+  .h-16 {
+    height: calc(var(--spacing) * 16);
   }
   .h-40 {
     height: calc(var(--spacing) * 40);
@@ -358,6 +376,12 @@
   }
   .h-72 {
     height: calc(var(--spacing) * 72);
+  }
+  .h-100 {
+    height: calc(var(--spacing) * 100);
+  }
+  .h-200 {
+    height: calc(var(--spacing) * 200);
   }
   .h-fit {
     height: fit-content;
@@ -452,8 +476,14 @@
   .w-10 {
     width: calc(var(--spacing) * 10);
   }
+  .w-12 {
+    width: calc(var(--spacing) * 12);
+  }
   .w-15 {
     width: calc(var(--spacing) * 15);
+  }
+  .w-16 {
+    width: calc(var(--spacing) * 16);
   }
   .w-18 {
     width: calc(var(--spacing) * 18);
@@ -463,6 +493,18 @@
   }
   .w-40 {
     width: calc(var(--spacing) * 40);
+  }
+  .w-70 {
+    width: calc(var(--spacing) * 70);
+  }
+  .w-100 {
+    width: calc(var(--spacing) * 100);
+  }
+  .w-200 {
+    width: calc(var(--spacing) * 200);
+  }
+  .w-700 {
+    width: calc(var(--spacing) * 700);
   }
   .w-fit {
     width: fit-content;
@@ -676,6 +718,9 @@
   }
   .rounded-3xl {
     border-radius: var(--radius-3xl);
+  }
+  .rounded-full {
+    border-radius: calc(infinity * 1px);
   }
   .rounded-lg {
     border-radius: var(--radius-lg);
@@ -1115,6 +1160,15 @@
   .text-wrap {
     text-wrap: wrap;
   }
+  .wrap-anywhere {
+    overflow-wrap: anywhere;
+  }
+  .wrap-break-word {
+    overflow-wrap: break-word;
+  }
+  .wrap-normal {
+    overflow-wrap: normal;
+  }
   .text-\[\#f9fbff\] {
     color: #f9fbff;
   }
@@ -1361,6 +1415,13 @@
     &:hover {
       @media (hover: hover) {
         opacity: 40%;
+      }
+    }
+  }
+  .hover\:opacity-45 {
+    &:hover {
+      @media (hover: hover) {
+        opacity: 45%;
       }
     }
   }
