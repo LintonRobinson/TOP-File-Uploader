@@ -1,35 +1,41 @@
-const path = require("node:path");
 const express = require("express");
 const app = express();
+const PORT = process.env.PORT;
+const path = require("node:path");
+const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
 const session = require("express-session");
 const passport = require("passport");
 const LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcryptjs");
 const prisma = require("./lib/prisma.js");
-const { PrismaSessionStore } = require("@quixo3/prisma-session-store");
+
+const methodOverride = require("method-override");
+const cookieParser = require("cookie-parser");
+
+// Routers
 const authRouter = require("./routes/authRouter.js");
 const folderRouter = require("./routes/folderRouter.js");
 const fileRouter = require("./routes/fileRouter.js");
-const bcrypt = require("bcryptjs");
 
-// SSR Static Asset Configuration
-const assetsPath = path.join(__dirname, "public");
-const PORT = 3000;
-app.use(express.static(assetsPath));
+// Middleware Imports
+const requireAuth = require("./middleware/requireAuth.js");
 
 // SSR View / View Ingine  Configuration
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
 
+// SSR Static Asset Configuration
+const assetsPath = path.join(__dirname, "public");
+app.use(express.static(assetsPath));
+
 // Parse Form Input Values and Return Variables With Names
 app.use(express.urlencoded({ extended: true }));
 
 // Override HTML form methods
-const methodOverride = require("method-override");
 app.use(methodOverride("_method"));
 
-// Import / configure multer and assigned to upload
-const multer = require("multer");
-const upload = multer({ dest: "uploads/" });
+// Parses the Cookie header on incoming requests and populates req.cookies with the key-value pairs, no manual parsing needed.
+app.use(cookieParser());
 
 // Initialize prisma store
 const prismaStore = new PrismaSessionStore(prisma, { checkPeriod: 15 * 60 * 1000 });
@@ -115,14 +121,12 @@ app.use("/auth", authRouter);
 
 app.use("/folder", folderRouter);
 
-app.use("/file", fileRouter);
+app.use("/file", requireAuth.isAuthenticated, fileRouter);
 
 app.get("/back", (req, res) => {
   const backUrl = req.get("Referrer");
   const isSameOrigin = backUrl && new URL(backUrl).origin === req.get("origin") ? req.protocol + "://" + req.get("host") : null;
-  // simpler: just check the referrer starts with your own host
   const safeUrl = backUrl && backUrl.startsWith(`${req.protocol}://${req.get("host")}`) ? backUrl : "/";
-  console.log(safeUrl);
   res.redirect(safeUrl);
 });
 
