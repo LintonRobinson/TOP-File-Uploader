@@ -1,6 +1,5 @@
 const prisma = require("../lib/prisma.js");
 const bcrypt = require("bcryptjs");
-
 const { validationResult, matchedData } = require("express-validator");
 
 async function signUpUser(req, res) {
