@@ -16,14 +16,25 @@
 <body class="flex flex-col min-h-screen bg-[#f9fbff] w-screen">
     <%- include("../partials/navbar") %>
         <%- include("../partials/upload-file") %>
-            <main class="max-w-6xl w-full flex flex-col flex-1 gap-5 pt-40 sm:pt-28  pb-5 px-6  mx-auto">
+            <main class="max-w-6xl w-full flex flex-col flex-1 gap-5 pt-40 sm:pt-28  pb-5 px-6  mx-auto relative">
                 <section class="flex flex-col gap-5">
                     <%if(folder.id !=="all" ) {%>
-                        <a href="/folder/<%=folder.id%>?rename_folder"
-                            class="sm:absolute sm:right-6 self-center bg-black px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out">Share
-                            Folder</a>
-                        <%}%>
+                        <div>
+                            <%if(!locals.guest){%>
+                                <a onclick="navigator.clipboard.writeText('<%=sharedFolderUrl%>');"
+                                    href="/folder/<%=folder.id%>/share"
+                                    class="sm:absolute sm:right-6 self-center bg-black px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out">
+                                    <%if(locals.sharedFolder){%>
 
+                                        Shared link has been copied!
+                                        <%} else {%>
+                                            Share Folder
+                                            <%}%>
+                                </a>
+                                <%}%>
+
+                        </div>
+                        <%}%>
                             <%if(folder.id !=="all" ) {%>
                                 <div class="flex flex-col min-[500px]:flex-row gap-8 items-center relative">
 
@@ -52,16 +63,18 @@
                                                 <div class="flex  items-center gap-5">
                                                     <%if(!locals.renameFolder){%>
                                                         <%if(folder.id !=="all" ) {%>
-                                                            <a href="/folder/<%=folder.id%>?rename_folder"
-                                                                class="bg-blue-500 px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out">Rename</a>
-                                                            <form action="/folder/<%=folder.id%>/delete" method="POST">
-                                                                <button
-                                                                    class="bg-red-500 px-5 py-1.5 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out"
-                                                                    type="submit">Delete Folder & Files</button>
-                                                            </form>
-                                                            <%}%>
-
+                                                            <%if(!locals.guest){%>
+                                                                <a href="/folder/<%=folder.id%>?rename_folder"
+                                                                    class="bg-blue-500 px-5 py-1.5 text-white rounded-xl hover:bg-blue-300 transition-all duration-300 ease-in-out">Rename</a>
+                                                                <form action="/folder/<%=folder.id%>/delete"
+                                                                    method="POST">
+                                                                    <button
+                                                                        class="bg-red-500 px-5 py-1.5 text-white rounded-xl hover:bg-red-300 transition-all duration-300 ease-in-out"
+                                                                        type="submit">Delete Folder & Files</button>
+                                                                </form>
                                                                 <%}%>
+                                                                    <%}%>
+                                                                        <%}%>
 
 
 
