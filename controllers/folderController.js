@@ -36,6 +36,7 @@ async function updateFolder(req, res, next) {
   const validatedFolder = matchedData(req);
 
   const folderId = req.params.folderId;
+  const sharedFolderUrl = `${req.protocol}://${req.get("host")}/folder/${folderId}/shared`;
   try {
     const updatedFolder = await prisma.folder.update({
       where: {
@@ -47,7 +48,13 @@ async function updateFolder(req, res, next) {
       },
     });
 
-    res.render("pages/folder-page", { folder: updatedFolder });
+    const files = await prisma.file.findMany({
+      where: {
+        folder_id: folderId,
+      },
+    });
+
+    res.render("pages/folder-page", { folder: updatedFolder, sharedFolderUrl: sharedFolderUrl, userFiles: files });
   } catch (error) {
     next(error);
   }
@@ -86,4 +93,141 @@ async function deleteFolder(req, res, next) {
   }
 }
 
-module.exports = { createFolder, updateFolder, deleteFolder };
+async function renderForm(req, res) {
+  const folderId = req.params.folderId;
+  let files;
+  let folder;
+
+  if (folderId === "all") {
+    files = await prisma.file.findMany({
+      where: {
+        user_id: req.user.id,
+      },
+    });
+
+    folder = {
+      id: "all",
+      name: "All Files",
+      description: "All of your files.",
+    };
+  } else {
+    folder = await prisma.folder.findUnique({
+      where: {
+        id: folderId,
+      },
+    });
+
+    if (folder.user_id !== req.user.id) return res.redirect("/dashboard");
+
+    files = await prisma.file.findMany({
+      where: {
+        folder_id: folderId,
+      },
+    });
+  }
+
+  const sharedFolderUrl = `${req.protocol}://${req.get("host")}/folder/${folderId}/shared`;
+
+  if (Object.hasOwn(req.query, "rename_folder")) {
+    return res.render("pages/folder-page", { renameFolder: true, folder: folder, userFiles: files, sharedFolderUrl: sharedFolderUrl });
+  }
+
+  if (Object.hasOwn(req.query, "show_upload_file")) {
+    return res.render("pages/folder-page", { uploadFile: true, folder: folder, userFiles: files, sharedFolderUrl: sharedFolderUrl });
+  }
+
+  res.render("pages/folder-page", { folder: folder, userFiles: files, sharedFolderUrl: sharedFolderUrl });
+}
+
+async function shareFolder(req, res) {
+  res.locals.homePath = true;
+  const folderId = req.params.folderId;
+  const sharedFolderUrl = `${req.protocol}://${req.get("host")}/folder/${folderId}/shared`;
+
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: folderId,
+    },
+  });
+
+  if (folder.user_id !== req.user.id) return res.redirect("/dashboard");
+
+  await prisma.folder.update({
+    where: {
+      id: folderId,
+    },
+    data: {
+      shared: true,
+    },
+  });
+
+  const files = await prisma.file.findMany({
+    where: {
+      folder_id: folderId,
+    },
+  });
+
+  if (Object.hasOwn(req.query, "rename_folder")) {
+    return res.render("pages/folder-page", { renameFolder: true, folder: folder, userFiles: files, sharedFolderUrl: sharedFolderUrl });
+  }
+
+  if (Object.hasOwn(req.query, "show_upload_file")) {
+    return res.render("pages/folder-page", { uploadFile: true, folder: folder, userFiles: files, sharedFolderUrl: sharedFolderUrl });
+  }
+
+  res.render("pages/folder-page", { folder: folder, userFiles: files, sharedFolder: true, sharedFolderUrl: sharedFolderUrl });
+}
+
+async function renderSharedFolder(req, res) {
+  if (req.user) return res.redirect("/dashboard");
+
+  const folderId = req.params.folderId;
+
+  if (Object.hasOwn(req.cookies, "shared_folder")) {
+    if (req.cookies.shared_folder === folderId) {
+      const folder = await prisma.folder.findUnique({
+        where: {
+          id: folderId,
+        },
+      });
+
+      const files = await prisma.file.findMany({
+        where: {
+          folder_id: folderId,
+        },
+      });
+      return res.render("pages/folder-page", { folder: folder, userFiles: files, guest: true });
+    } else {
+      return res.redirect("/dashboard");
+    }
+  }
+  const folder = await prisma.folder.findUnique({
+    where: {
+      id: folderId,
+    },
+  });
+
+  if (!folder.shared) return res.redirect("/");
+
+  await prisma.folder.update({
+    where: {
+      id: folderId,
+    },
+    data: {
+      shared: false,
+    },
+  });
+  res.cookie("shared_folder", folderId, {
+    maxAge: 60000,
+    httpOnly: true,
+    sameSite: "strict",
+  });
+  const files = await prisma.file.findMany({
+    where: {
+      folder_id: folderId,
+    },
+  });
+  res.render("pages/folder-page", { folder: folder, userFiles: files, guest: true });
+}
+
+module.exports = { createFolder, updateFolder, deleteFolder, renderForm, shareFolder, renderSharedFolder };
