@@ -18,8 +18,8 @@ async function uploadFile(req, res) {
   }
   const validatedFileFolder = matchedData(req);
   const asset = await uploadToCloudinaryFromBuffer(req.file.buffer);
-  const downloadUrl = `https://res.cloudinary.com/mkigiypd/${asset.resource_type}/upload//fl_attachment/${asset.asset_folder}/${asset.display_name}`;
-  const fileUrl = `https://res.cloudinary.com/mkigiypd/image/upload/w_235,h_235,c_fit/user_uploads/${asset.display_name}`;
+  const downloadUrl = `https://res.cloudinary.com/mkigiypd/${asset.resource_type}/upload/fl_attachment/${asset.asset_folder}/${asset.display_name}`;
+  const fileUrl = `https://res.cloudinary.com/mkigiypd/${asset.resource_type}/upload/w_235,h_235,c_fit/user_uploads/${asset.display_name}`;
   const fileProperties = { user_id: req.user.id, name: req.file.originalname, file_url: fileUrl, file_size: String(req.file.size), download_url: downloadUrl, public_id: asset.public_id };
   if (validatedFileFolder.folder_id !== "no_folder" && validatedFileFolder.folder_id !== "all") fileProperties.folder_id = validatedFileFolder.folder_id;
   const createdFile = await prisma.file.create({
@@ -55,9 +55,7 @@ async function deleteFile(req, res, next) {
         id: fileId,
       },
     });
-
     await cloudinary.uploader.destroy(file.public_id);
-
     await prisma.file.delete({
       where: {
         id: fileId,
