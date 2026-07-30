@@ -9,6 +9,7 @@ cloudinary.config({
 });
 
 async function createFolder(req, res, next) {
+  if (!req.isAuthenticated()) return res.redirect("/");
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     res.render("pages/dashboard", { errors: errors.array(), showCreateFolder: true });
@@ -33,6 +34,7 @@ async function createFolder(req, res, next) {
 }
 
 async function updateFolder(req, res, next) {
+  if (!req.isAuthenticated()) return res.redirect("/");
   const validatedFolder = matchedData(req);
 
   const folderId = req.params.folderId;
@@ -61,6 +63,8 @@ async function updateFolder(req, res, next) {
 }
 
 async function deleteFolder(req, res, next) {
+  if (!req.isAuthenticated()) return res.redirect("/");
+
   const folderId = req.params.folderId;
   const files = await prisma.file.findMany({
     where: {
@@ -94,6 +98,8 @@ async function deleteFolder(req, res, next) {
 }
 
 async function renderForm(req, res) {
+  if (!req.isAuthenticated()) return res.redirect("/");
+
   const folderId = req.params.folderId;
   let files;
   let folder;
@@ -140,6 +146,7 @@ async function renderForm(req, res) {
 }
 
 async function shareFolder(req, res) {
+  if (!req.isAuthenticated()) return res.redirect("/");
   res.locals.homePath = true;
   const folderId = req.params.folderId;
   const sharedFolderUrl = `${req.protocol}://${req.get("host")}/folder/${folderId}/shared`;
